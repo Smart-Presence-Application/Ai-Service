@@ -1,0 +1,17 @@
+.git
+.gitignore
+.claude
+venv
+.venv
+__pycache__
+*.pyc
+.env
+.env.*
+!.env.example
+SP Student Data Rupapur
+VIDYA
+ai_check_fe
+node_modules
+README.md
+DockerFile
+.dockerignore
