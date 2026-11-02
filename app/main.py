@@ -80,6 +80,7 @@ protected = [Depends(require_api_key)]
 
 
 @app.get("/health")
+@app.head("/health")
 def health() -> dict[str, object]:
     """Liveness probe; left unauthenticated so load balancers can call it."""
     return {"status": "running", "model_loaded": is_face_engine_loaded(), "database": "ok" if ping_database() else "down"}
