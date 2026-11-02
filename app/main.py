@@ -9,6 +9,7 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
+from app.database import ping_database
 from app.gridfs_storage import delete_embedding
 from app.model_loader import get_face_engine, is_face_engine_loaded
 from app.recognition import (
@@ -81,7 +82,7 @@ protected = [Depends(require_api_key)]
 @app.get("/health")
 def health() -> dict[str, object]:
     """Liveness probe; left unauthenticated so load balancers can call it."""
-    return {"status": "running", "model_loaded": is_face_engine_loaded()}
+    return {"status": "running", "model_loaded": is_face_engine_loaded(), "database": "ok" if ping_database() else "down"}
 
 
 @app.post("/register-face", dependencies=protected)

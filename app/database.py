@@ -19,6 +19,19 @@ bucket = GridFSBucket(
 
 files_collection = db[f"{settings.gridfs_bucket}.files"]
 
+# A separate client with a short server-selection timeout, so a health
+# check reports a MongoDB outage in seconds instead of the default 30.
+_health_client = MongoClient(settings.mongodb_uri, serverSelectionTimeoutMS=2000)
+
+
+def ping_database() -> bool:
+    """Whether MongoDB answers a ping."""
+    try:
+        _health_client.admin.command("ping")
+    except Exception:
+        return False
+    return True
+
 files_collection.create_index(
     [
         ("metadata.school_id", ASCENDING),
